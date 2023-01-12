@@ -103,3 +103,32 @@ INSERT INTO order_items (order_id, product_id, quantity) VALUES(8, 5, 1);
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(9, 13, 2);
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(10, 14, 1);
 INSERT INTO order_items (order_id, product_id, quantity) VALUES(10, 6, 5);
+
+SELECT name, address FROM customers WHERE country = 'United States';
+SELECT * FROM customers ORDER BY name ASC;
+SELECT * FROM products WHERE unit_price > 100;
+SELECT * FROM products WHERE product_name LIKE '%socks%';
+SELECT * FROM products ORDER BY unit_price desc limit 5;
+SELECT product_name, unit_price, supplier_name FROM products, suppliers WHERE supplier_id in (SELECT id FROM suppliers);
+SELECT product_name, supplier_name, country FROM products, suppliers WHERE products.supplier_id = suppliers.id AND suppliers.country = 'United Kingdom';
+SELECT * from orders WHERE customer_id = 1;
+SELECT * FROM orders WHERE customer_id in (SELECT id FROM customers WHERE name = 'Hope Crosby');
+
+SELECT products.product_name, products.unit_price, order_items.quantity, order_items.id from products
+  INNER JOIN order_items
+  ON order_items.product_id = products.id
+  INNER JOIN orders
+  ON orders.id = order_items.order_id
+WHERE orders.order_reference = 'ORD006';
+
+select distinct customers.name from customers
+  INNER JOIN orders
+  ON orders.customer_id = customers.id
+  INNER JOIN order_items
+  ON order_items.order_id = orders.id
+  INNER JOIN products
+  ON order_items.product_id = products.id
+  INNER JOIN suppliers
+  ON suppliers.id = products.supplier_id
+WHERE suppliers.country = 'China';
+
